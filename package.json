@@ -1,0 +1,9 @@
+{
+  "name": "pcap-lens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local, evidence-based packet capture analysis",
+  "scripts": { "start": "node src/server.mjs", "test": "node --test", "fixture": "node scripts/make-fixture.mjs" },
+  "engines": { "node": ">=22" }
+}

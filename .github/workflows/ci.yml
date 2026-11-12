@@ -1,0 +1,19 @@
+name: Container tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build test image
+        run: docker build --target test -t pcap-lens-test .
+      - name: Run offline analysis and integration tests
+        run: docker run --rm --network none --tmpfs /tmp:rw,size=256m pcap-lens-test

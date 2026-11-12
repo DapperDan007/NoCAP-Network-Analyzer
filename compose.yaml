@@ -1,0 +1,30 @@
+services:
+  pcap-lens:
+    build:
+      context: .
+      target: runtime
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      PORT: "8080"
+      DATA_DIR: /data
+      MAX_UPLOAD_MB: "250"
+      MAX_STORAGE_MB: "2048"
+      ANALYSIS_TIMEOUT_SECONDS: "180"
+      # Set API_TOKEN in .env before making the service accessible beyond localhost.
+      API_TOKEN: ${API_TOKEN:-}
+      REQUIRE_AUTH: ${REQUIRE_AUTH:-false}
+    volumes:
+      - capture-data:/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=256m,mode=1777
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 1g
+    cpus: 2
+    pids_limit: 100
+volumes:
+  capture-data:

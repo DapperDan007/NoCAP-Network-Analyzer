@@ -5,7 +5,8 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const num=n=>Number(n||0).toLocaleString();
 function bytes(n){let i=0;const units=['B','KB','MB','GB'];while(n>=1024&&i<3){n/=1024;i++;}return `${Number(n||0).toFixed(i?1:0)} ${units[i]}`;}
 function el(name,attrs={},text){const node=document.createElementNS(ns,name);for(const [key,value]of Object.entries(attrs))node.setAttribute(key,value);if(text!==undefined)node.textContent=text;return node;}
-let token=sessionStorage.getItem('pcap-lens-token')||'',model,report,graph,selected=null,focus=null;
+let token=sessionStorage.getItem('no-cap-token')||sessionStorage.getItem('pcap-lens-token')||'',model,report,graph,selected=null,focus=null;
+if(token){sessionStorage.setItem('no-cap-token',token);sessionStorage.removeItem('pcap-lens-token');}
 let expanded=new Set(),positions=new Map(),nodeEls=new Map(),linkEls=[],halos=[];
 let camera={x:0,y:0,k:1},gesture=null,lastClick=null,frame=0,sessionId=null,loadSequence=0;
 function message(text){$('#map-message').hidden=!text;$('#map-message').textContent=text;}
@@ -181,7 +182,7 @@ async function load(id){
   }catch(e){if(sequence===loadSequence)message(e.message);}
 }
 $('#map-session').onchange=()=>load($('#map-session').value);
-$('#map-connect').onclick=()=>{token=$('#map-token').value.trim();sessionStorage.setItem('pcap-lens-token',token);$('#map-token').value='';setTimeout(init,0);};
+$('#map-connect').onclick=()=>{token=$('#map-token').value.trim();sessionStorage.setItem('no-cap-token',token);sessionStorage.removeItem('pcap-lens-token');$('#map-token').value='';setTimeout(init,0);};
 async function init(){
   try{
     const jobs=(await api('/api/jobs')).filter(j=>j.status==='complete');$('#map-session').replaceChildren();

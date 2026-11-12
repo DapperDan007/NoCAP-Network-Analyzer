@@ -1,6 +1,6 @@
-# NoCAP Network Analyzer workspace
+# No-CAP workspace
 
-This is a self-hosted Docker application. The web interface is named PCAP Lens.
+This is a self-hosted Docker application. The web interface is named No-CAP.
 
 ## GitHub synchronization
 
@@ -15,6 +15,6 @@ The user wants completed Codex changes in this workspace synchronized to `https:
 ## Verification
 
 - No npm packages are needed. `node --test test/map.test.mjs test/analyzer.test.mjs` checks pure application logic.
-- Full verification uses `docker build --target test -t pcap-lens-test .` then `docker run --rm --network none --tmpfs /tmp:rw,size=256m pcap-lens-test`. This includes real TShark parsing and HTTP integration tests.
+- Full verification uses `docker build --target test -t no-cap-test .` then `docker run --rm --network none --tmpfs /tmp:rw,size=256m no-cap-test`. This includes real TShark parsing and HTTP integration tests.
 - After UI changes, use the supported browser tools to verify the affected interactions when available.
 - Production is started with `docker compose up --build -d`; preserve the `capture-data` volume during updates.

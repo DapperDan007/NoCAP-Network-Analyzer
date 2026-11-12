@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PCAP Lens · Network investigation</title><link rel="stylesheet" href="/style.css"><script type="module" src="/app.js"></script></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>No-CAP · Network investigation</title><link rel="stylesheet" href="/style.css"><script type="module" src="/app.js"></script></head>
 <body>
   <aside class="sidebar">
-    <a class="brand" href="/" aria-label="PCAP Lens home"><span class="brand-mark">⌁</span> PCAP <strong>Lens</strong></a>
+    <a class="brand" href="/" aria-label="No-CAP home"><span class="brand-mark">⌁</span> <span>No-<strong>CAP</strong></span></a>
     <div class="sidebar-label">WORKSPACE</div>
     <button class="nav active" id="nav-analysis"><span>◈</span> Capture analysis</button>
     <a class="nav map-nav" id="nav-map" href="/map">◎ &nbsp; Network map</a>
@@ -30,7 +30,7 @@
       <div class="report-toolbar"><p id="tab-description"></p><input id="filter" type="search" placeholder="Filter this view…" aria-label="Filter report"></div>
       <div id="report-content"></div><p id="row-limit" class="muted"></p>
     </section>
-    <footer>PCAP LENS <span>Evidence first. Conclusions with context.</span><span>No external analytics or cloud processing.</span></footer>
+    <footer>No-CAP <span>Evidence first. Conclusions with context.</span><span>No external analytics or cloud processing.</span></footer>
   </main>
   <dialog id="auth-dialog"><form method="dialog"><h2>Access token</h2><p>Enter the API_TOKEN configured on your server.<br>Leave blank if authentication is disabled.</p><label>Token<input id="token" type="password" autocomplete="off"></label><p class="muted">Stored in this browser tab’s session only.</p><div class="actions"><button value="cancel">Cancel</button><button class="primary" id="save-token" value="save">Connect</button></div></form></dialog>
 </body></html>

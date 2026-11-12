@@ -1,5 +1,7 @@
 const $ = selector=>document.querySelector(selector);
-let token = sessionStorage.getItem('pcap-lens-token') || '';
+// Preserve existing authenticated browser sessions across the No-CAP rename.
+let token = sessionStorage.getItem('no-cap-token') || sessionStorage.getItem('pcap-lens-token') || '';
+if (token) { sessionStorage.setItem('no-cap-token', token); sessionStorage.removeItem('pcap-lens-token'); }
 let selected, report, tab='findings', poll, uploadBusy=false;
 const number = n=>Number(n).toLocaleString();
 function bytes(n) { const units=['B','KB','MB','GB']; let i=0; while(n>=1024 && i<3){n/=1024;i++;} return `${n.toFixed(i?1:0)} ${units[i]}`; }
@@ -96,7 +98,7 @@ document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.
 $('#refresh').onclick=()=>sessions().catch(e=>message(e.message));
 $('#nav-analysis').onclick=()=>{clearTimeout(poll);selected=null;report=null;$('#report').hidden=true;$('#job-state').hidden=true;$('#empty').hidden=false;sessions().catch(e=>message(e.message));};
 $('#auth-button').onclick=()=>$('#auth-dialog').showModal();
-$('#save-token').onclick=()=>{token=$('#token').value.trim();sessionStorage.setItem('pcap-lens-token',token);$('#token').value='';setTimeout(()=>init(),0);};
+$('#save-token').onclick=()=>{token=$('#token').value.trim();sessionStorage.setItem('no-cap-token',token);sessionStorage.removeItem('pcap-lens-token');$('#token').value='';setTimeout(()=>init(),0);};
 $('#download-report').onclick=()=>{if(report)download(new Blob([JSON.stringify(report,null,2)],{type:'application/json'}),`${report.session.filename}.report.json`);};
 $('#download-capture').onclick=async()=>{try{const response=await api(`/api/jobs/${selected}/capture`);download(await response.blob(),report.session.filename);}catch(e){message(e.message);}};
 $('#delete-session').onclick=()=>removeJob(selected);

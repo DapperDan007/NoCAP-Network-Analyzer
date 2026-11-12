@@ -11,7 +11,7 @@ import { analyzeCapture } from '../src/analyzer.mjs';
 
 const tsharkAvailable = spawnSync(process.env.TSHARK_PATH || 'tshark',['--version'],{windowsHide:true}).status === 0;
 test('real TShark extracts DNS and detects synthetic scan / polling',{skip:!tsharkAvailable},async()=>{
-  const dir=await mkdtemp(path.join(os.tmpdir(),'pcap-lens-parser-'));
+  const dir=await mkdtemp(path.join(os.tmpdir(),'no-cap-parser-'));
   try{
     const capture=path.join(dir,'sample.pcap');await writeFile(capture,fixture());
     const report=await analyzeCapture(capture,{indicators:[]});
@@ -25,7 +25,7 @@ test('real TShark extracts DNS and detects synthetic scan / polling',{skip:!tsha
   }finally{await rm(dir,{recursive:true,force:true});}
 });
 test('HTTP authentication, validation, session lifecycle and persistence',{timeout:30000},async()=>{
-  const dir=await mkdtemp(path.join(os.tmpdir(),'pcap-lens-http-'));
+  const dir=await mkdtemp(path.join(os.tmpdir(),'no-cap-http-'));
   const token='test-only-token'; const port=18000+Math.floor(Math.random()*10000);
   const base=`http://127.0.0.1:${port}`;
   const headers={Authorization:`Bearer ${token}`};

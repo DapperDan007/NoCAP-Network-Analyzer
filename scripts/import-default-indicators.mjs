@@ -10,9 +10,9 @@ const feeds = [
 ];
 const importing = process.argv.includes('--import');
 const replace = process.argv.includes('--replace');
-const base = new URL(process.env.PCAP_LENS_URL || 'http://localhost:8080');
+const base = new URL(process.env.NOCAP_URL || process.env.PCAP_LENS_URL || 'http://localhost:8080');
 if (!['http:', 'https:'].includes(base.protocol) || !['localhost', '127.0.0.1', '[::1]'].includes(base.hostname))
-  throw new Error('PCAP_LENS_URL must target this machine via localhost or a loopback address.');
+  throw new Error('NOCAP_URL must target this machine via localhost or a loopback address.');
 const headers = process.env.API_TOKEN ? { Authorization: `Bearer ${process.env.API_TOKEN}` } : {};
 async function api(route, options = {}) {
   const response = await fetch(new URL(route, base), { ...options, headers: { ...headers, ...options.headers }, signal: AbortSignal.timeout(30000) });

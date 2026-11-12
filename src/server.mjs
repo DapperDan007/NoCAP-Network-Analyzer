@@ -44,7 +44,7 @@ async function work() {
         const intel = await readIntel();
         const report = await analyzeCapture(jobPath(job.id,'capture.pcap'),intel,{ timeoutMs,
           onProgress:count=>{job.processedPackets=count;} });
-        report.session = { id:job.id, filename:job.filename, analyzedAt:new Date().toISOString(), engine:'TShark + PCAP Lens rules v0.1' };
+        report.session = { id:job.id, filename:job.filename, analyzedAt:new Date().toISOString(), engine:'TShark + No-CAP rules v0.1' };
         await atomicJSON(jobPath(job.id,'report.json'),report);
         job.summary = report.summary; job.status = 'complete'; job.processedPackets = report.summary.packets;
       } catch(error) { job.status = 'failed'; job.error = error.message; }
@@ -162,6 +162,6 @@ const server = http.createServer(async(req,res)=>{
 server.requestTimeout = 300000;
 server.headersTimeout = 30000;
 server.listen(Number(process.env.PORT || 8080),process.env.HOST || '127.0.0.1',()=>{
-  console.log(`PCAP Lens listening on port ${process.env.PORT || 8080}. Captures and reports remain in ${data}.`);
+  console.log(`No-CAP listening on port ${process.env.PORT || 8080}. Captures and reports remain in ${data}.`);
   void work().catch(error=>console.error('Queue error:',error.message));
 });

@@ -1,6 +1,6 @@
-# NoCAP Network Analyzer
+# No-CAP
 
-NoCAP's web interface is called **PCAP Lens**. This repository contains the Docker app, offline traffic analysis engine, interactive network map, and local indicator-import tooling.
+**No-CAP** is a network capture analyzer with a Docker app, offline traffic analysis engine, interactive network map, and local indicator-import tooling.
 
 A self-hosted, Dockerized web app for investigating uploaded PCAP and PCAPNG captures. Analysis and storage stay on your server. There is no live packet capture, cloud upload, telemetry, external lookup, or LLM dependency.
 
@@ -26,6 +26,8 @@ docker compose down
 ```
 
 `down` preserves the named `capture-data` volume. Captures, reports, session history, and imported indicators persist there. Delete a session in the UI to remove its capture and report. No automatic expiry is configured.
+
+When upgrading an installation created before the No-CAP rename, run `docker compose up --build -d --remove-orphans` from the same project directory. This replaces the old service container and keeps the existing `capture-data` volume.
 
 ### Windows startup troubleshooting
 
@@ -63,7 +65,7 @@ To download a starter set of Threatview's public high-confidence IP and domain f
 node scripts/import-default-indicators.mjs --import
 ```
 
-This requires Node.js 22+ on the host. It saves `data/default-indicators.json` for manual import and a separate `data/default-indicators.sources.json` with feed provenance. Run without `--import` to download only. If indicators are already installed, the script refuses to overwrite them unless you explicitly add `--replace`. For a token-protected instance, supply the existing token through the `API_TOKEN` environment variable. Optional `PCAP_LENS_URL` selects another local port.
+This requires Node.js 22+ on the host. It saves `data/default-indicators.json` for manual import and a separate `data/default-indicators.sources.json` with feed provenance. Run without `--import` to download only. If indicators are already installed, the script refuses to overwrite them unless you explicitly add `--replace`. For a token-protected instance, supply the existing token through the `API_TOKEN` environment variable. Optional `NOCAP_URL` selects another local port.
 
 Source: [Threatview community feeds](https://threatview.io/). These are reputation leads, not verified compromise verdicts. `updated` uses the feed file's HTTP Last-Modified timestamp when available, otherwise retrieval time; neither establishes when an individual indicator was last observed. The script never contacts listed malicious destinations. No automatic refresh is scheduled; rerun when you want a fresh snapshot. Existing reports require reanalysis to use new indicators.
 
@@ -129,8 +131,8 @@ It contains 31 packets: a DNS query, a port-scan pattern, and periodic connectio
 For complete tests including real packet parsing using the container's TShark:
 
 ```sh
-docker build --target test -t pcap-lens-test .
-docker run --rm --network none --tmpfs /tmp:rw,size=256m pcap-lens-test
+docker build --target test -t no-cap-test .
+docker run --rm --network none --tmpfs /tmp:rw,size=256m no-cap-test
 ```
 
 `--network none` leaves loopback available for the HTTP tests and prevents outbound network access. The test stage's temporary data lives under `/tmp`; the production image is built with `--target runtime` (already selected by Compose).
